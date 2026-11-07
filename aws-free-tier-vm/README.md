@@ -7,6 +7,21 @@ you follow the cleanup steps at the end**.
 
 Time needed: 60 to 90 minutes.
 
+## Quick start
+
+```bash
+cd aws-free-tier-vm
+cp terraform.tfvars.example terraform.tfvars   # edit region / key path if needed
+terraform init
+terraform plan                                  # expect: 3 to add
+terraform apply                                 # type yes, ~1 minute
+curl $(terraform output -raw web_url)           # wait ~1 min after apply
+$(terraform output -raw ssh_command)            # log in
+terraform destroy                               # type yes, ALWAYS before you leave
+```
+
+The rest of this file explains each step.
+
 ## What you will build
 
 ```
