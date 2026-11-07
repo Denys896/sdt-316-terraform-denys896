@@ -14,6 +14,6 @@ output "vm_availability_zones" {
 }
 
 output "ssh_commands" {
-  description = "One SSH command per VM"
-  value       = [for ip in aws_instance.vm[*].public_ip : "ssh ubuntu@${ip}"]
+  description = "One ready-made SSH command per VM. The private key is assumed to sit next to the .pub file, without the .pub suffix."
+  value       = [for ip in aws_instance.vm[*].public_ip : "ssh -i ${trimsuffix(var.ssh_public_key_path, ".pub")} ubuntu@${ip}"]
 }

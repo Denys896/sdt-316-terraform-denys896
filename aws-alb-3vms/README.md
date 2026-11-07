@@ -10,9 +10,9 @@ Time needed: 60 to 90 minutes. Keep the stack up only while you work on it.
 
 ```bash
 cd aws-alb-3vms
-cp terraform.tfvars.example terraform.tfvars   # edit region / key path if needed
+cp terraform.tfvars.example terraform.tfvars   # set region; set key path if not ~/.ssh/id_ed25519.pub
 terraform init
-terraform plan                                  # expect: 11 to add
+terraform plan                                  # expect: 12 to add
 terraform apply                                 # type yes, ~3 minutes
 curl $(terraform output -raw alb_url)           # repeat; the VM number changes
 terraform destroy                               # type yes, ALWAYS before you leave
@@ -39,7 +39,7 @@ terraform destroy                               # type yes, ALWAYS before you le
            AZ a    AZ b    AZ c          (one t3.micro per AZ, Ubuntu + nginx)
 ```
 
-Terraform creates 11 resources: 1 key pair, 2 security groups, 3 instances,
+Terraform creates 12 resources: 1 key pair, 2 security groups, 3 instances,
 1 load balancer, 1 target group, 3 target attachments, 1 listener.
 
 ## Cost: this is NOT entirely free. Read before applying.
@@ -58,8 +58,12 @@ budget alert configured.
 ## Prerequisites
 
 Same as lab 1: AWS CLI configured (`aws sts get-caller-identity` works),
-Terraform >= 1.5, an SSH key at `~/.ssh/id_ed25519.pub`. Your IAM user needs
-`AmazonEC2FullAccess` and `ElasticLoadBalancingFullAccess`.
+Terraform >= 1.5, and an SSH key pair. If you have not done lab 1, read its
+section *SSH keys: what they are and what to do with yours* first. In short:
+`ls ~/.ssh/*.pub`; if empty run `ssh-keygen -t ed25519`; if you want to use a
+key other than `~/.ssh/id_ed25519.pub`, set `ssh_public_key_path` in
+`terraform.tfvars`. Your IAM user needs `AmazonEC2FullAccess` and
+`ElasticLoadBalancingFullAccess`.
 
 Your region's default VPC must have **at least two subnets** in different AZs.
 Every default VPC does.
@@ -83,7 +87,7 @@ terraform init
 terraform plan
 ```
 
-Expect `Plan: 11 to add`. Find in the output:
+Expect `Plan: 12 to add`. Find in the output:
 
 - `aws_instance.vm[0]`, `[1]`, `[2]`: the index in brackets comes from `count`.
 - `aws_lb_target_group_attachment.web[0..2]`: one per VM.
@@ -122,14 +126,18 @@ It times out. Port 80 on the VMs accepts traffic from the ALB's security group
 only, not from you. SSH, however, works:
 
 ```bash
-ssh ubuntu@$(terraform output -json vm_public_ips | jq -r '.[0]')
+$(terraform output -json ssh_commands | jq -r '.[0]')
 ```
+
+The `ssh_commands` output holds one ready-made command per VM, including the
+`-i` flag for your private key.
 
 ### 6. Break one and watch the ALB route around it
 
 SSH into VM 0 and stop the web server:
 
 ```bash
+$(terraform output -json ssh_commands | jq -r '.[0]')
 sudo systemctl stop nginx
 exit
 ```
@@ -154,7 +162,7 @@ scaled in and out by editing one line.
 terraform destroy
 ```
 
-Expect `Resources: 11 destroyed`. Then check the console in the right region:
+Expect `Resources: 12 destroyed`. Then check the console in the right region:
 EC2 -> Instances (all terminated), EC2 -> Load Balancers (empty),
 EC2 -> Target Groups (empty).
 
