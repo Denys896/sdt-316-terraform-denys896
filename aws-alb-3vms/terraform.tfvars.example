@@ -1,5 +1,7 @@
 # Copy to terraform.tfvars (git-ignored) and adjust.
 
+# REQUIRED. Use the region you chose in `aws configure` (check: aws configure get region).
+# Without this line Terraform asks "var.aws_region  Enter a value:" on every command.
 aws_region          = "eu-central-1"
 project_name        = "tf-student-alb"
 vm_count            = 3

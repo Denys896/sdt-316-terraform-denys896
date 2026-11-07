@@ -46,6 +46,7 @@ ssh-keygen -t ed25519 -C "student"      #   creates ~/.ssh/id_ed25519.pub
 cd aws-free-tier-vm
 cp terraform.tfvars.example terraform.tfvars
 curl -s ifconfig.me                     # your public IP, for ssh_allowed_cidr
+aws configure get region                # put this value in terraform.tfvars as aws_region (REQUIRED)
 #    edit terraform.tfvars: aws_region, ssh_public_key_path, ssh_allowed_cidr = "<ip>/32"
 
 # 2. Create the VM
@@ -249,7 +250,12 @@ cp terraform.tfvars.example terraform.tfvars
 
 Open `terraform.tfvars` and:
 
-- set `aws_region` to the region you chose in `aws configure`;
+- set `aws_region` to the region you chose in `aws configure` (check with
+  `aws configure get region`). **This value is required**: the variable has
+  no default, so if you leave it out Terraform stops and asks
+  `var.aws_region  Enter a value:` on every `plan`, `apply` and `destroy`.
+  The region decides where your VM physically runs and where you must look
+  for it in the console;
 - optionally set `ssh_allowed_cidr` to your own IP, found with `curl -s ifconfig.me`,
   followed by `/32`. Leaving `0.0.0.0/0` works but lets the whole internet
   knock on port 22.
@@ -369,6 +375,15 @@ create either, but checking is the habit.
 | `ansible/`                 | Playbook, template, config and inventory helper for the homework |
 
 ## Troubleshooting
+
+**Terraform asks `var.aws_region  Enter a value:`**
+You have no `terraform.tfvars`, or it lacks `aws_region`. Copy the example
+file and set the region. Typing it at the prompt works too, but you will be
+asked again on the next command. Alternative: `terraform plan -var aws_region=eu-central-1`.
+
+**`Error: Invalid value for variable ... Must look like a real AWS region`**
+Typo in `aws_region`. Valid examples: `eu-central-1`, `us-east-1`, `eu-west-2`.
+List them all with `aws ec2 describe-regions --query 'Regions[].RegionName' --output text`.
 
 **`Error: no matching EC2 VPC found`**
 Your account has no default VPC in this region. In the console go to

@@ -1,6 +1,8 @@
 # Copy this file to terraform.tfvars and adjust the values.
 # terraform.tfvars is read automatically by Terraform and is git-ignored.
 
+# REQUIRED. Use the region you chose in `aws configure` (check: aws configure get region).
+# Without this line Terraform asks "var.aws_region  Enter a value:" on every command.
 aws_region          = "eu-central-1"
 project_name        = "tf-student-demo"
 instance_type       = "t3.micro"

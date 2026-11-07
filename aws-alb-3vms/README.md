@@ -10,7 +10,7 @@ Time needed: 60 to 90 minutes. Keep the stack up only while you work on it.
 
 ```bash
 cd aws-alb-3vms
-cp terraform.tfvars.example terraform.tfvars   # set region; set key path if not ~/.ssh/id_ed25519.pub
+cp terraform.tfvars.example terraform.tfvars   # aws_region is REQUIRED; set key path if not ~/.ssh/id_ed25519.pub
 terraform init
 terraform plan                                  # expect: 12 to add
 terraform apply                                 # type yes, ~3 minutes
@@ -77,8 +77,10 @@ cd aws-alb-3vms
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-Set `aws_region` to match `aws configure`. Optionally set `ssh_allowed_cidr`
-to your IP (`curl -s ifconfig.me`) followed by `/32`.
+Set `aws_region` to match `aws configure` (`aws configure get region`). It is
+**required**; without it Terraform asks `var.aws_region  Enter a value:` on
+every command. Optionally set `ssh_allowed_cidr` to your IP
+(`curl -s ifconfig.me`) followed by `/32`.
 
 ### 2. Init and plan
 
