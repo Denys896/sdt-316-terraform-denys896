@@ -1,0 +1,240 @@
+data.aws_vpc.default: Reading...
+data.aws_ami.ubuntu: Reading...
+aws_key_pair.this: Refreshing state... [id=tf-student-demo-key]
+data.aws_ami.ubuntu: Read complete after 1s [id=ami-084df9e6ad4622caf]
+data.aws_vpc.default: Read complete after 1s [id=vpc-0969289d5292f93ce]
+data.aws_subnets.default: Reading...
+aws_security_group.vm: Refreshing state... [id=sg-010b389b218d043ab]
+data.aws_subnets.default: Read complete after 0s [id=eu-north-1]
+aws_instance.vm: Refreshing state... [id=i-019ad4240fc64f6bd]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.vm will be destroyed
+  - resource "aws_instance" "vm" {
+      - ami                                  = "ami-084df9e6ad4622caf" -> null
+      - arn                                  = "arn:aws:ec2:eu-north-1:404813130000:instance/i-019ad4240fc64f6bd" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "eu-north-1b" -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - force_destroy                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-019ad4240fc64f6bd" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "tf-student-demo-key" -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-07444fbef17e9eee4" -> null
+      - private_dns                          = "ip-172-31-40-10.eu-north-1.compute.internal" -> null
+      - private_ip                           = "172.31.40.10" -> null
+      - public_dns                           = "ec2-13-53-40-236.eu-north-1.compute.amazonaws.com" -> null
+      - public_ip                            = "13.53.40.236" -> null
+      - region                               = "eu-north-1" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [
+          - "tf-student-demo-sg",
+        ] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0236208c36d019497" -> null
+      - tags                                 = {
+          - "Name"  = "tf-student-demo-vm"
+          - "Owner" = "denys"
+        } -> null
+      - tags_all                             = {
+          - "ManagedBy" = "terraform"
+          - "Name"      = "tf-student-demo-vm"
+          - "Owner"     = "denys"
+          - "Project"   = "tf-student-demo"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data                            = <<-EOT
+            #!/bin/bash
+            set -eux
+            apt-get update -y
+            apt-get install -y nginx
+            cat > /var/www/html/index.html <<HTML
+            <h1>Hello from Terraform! (v2)</h1>
+            <p>Instance: $(hostname)</p>
+            HTML
+            systemctl enable --now nginx
+        EOT -> null
+      - user_data_replace_on_change          = true -> null
+      - vpc_security_group_ids               = [
+          - "sg-010b389b218d043ab",
+        ] -> null
+        # (8 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 2 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "unlimited" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-07444fbef17e9eee4" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/sda1" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {} -> null
+          - tags_all              = {
+              - "ManagedBy" = "terraform"
+              - "Project"   = "tf-student-demo"
+            } -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-0b8f4889e18f1ad65" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp3" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_key_pair.this will be destroyed
+  - resource "aws_key_pair" "this" {
+      - arn             = "arn:aws:ec2:eu-north-1:404813130000:key-pair/tf-student-demo-key" -> null
+      - fingerprint     = "ULpZQiM1tK730BW6HfugsQi6B1XKkwEhMkBP7Yllyo4=" -> null
+      - id              = "tf-student-demo-key" -> null
+      - key_name        = "tf-student-demo-key" -> null
+      - key_pair_id     = "key-009e3c7fa3c5e3e48" -> null
+      - key_type        = "ed25519" -> null
+      - public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFf7FB7lx79T1KavIug5NH2R6KhqaSuucDM5/jKRUDrr terraform-lab" -> null
+      - region          = "eu-north-1" -> null
+      - tags            = {} -> null
+      - tags_all        = {
+          - "ManagedBy" = "terraform"
+          - "Project"   = "tf-student-demo"
+        } -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.vm will be destroyed
+  - resource "aws_security_group" "vm" {
+      - arn                    = "arn:aws:ec2:eu-north-1:404813130000:security-group/sg-010b389b218d043ab" -> null
+      - description            = "Allow SSH and HTTP to the demo VM" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all outbound traffic (apt-get needs this)"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-010b389b218d043ab" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTP"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "SSH"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "tf-student-demo-sg" -> null
+      - owner_id               = "404813130000" -> null
+      - region                 = "eu-north-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "ManagedBy" = "terraform"
+          - "Project"   = "tf-student-demo"
+        } -> null
+      - vpc_id                 = "vpc-0969289d5292f93ce" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Changes to Outputs:
+  - ami_used    = "ami-084df9e6ad4622caf (ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-20261108)" -> null
+  - instance_id = "i-019ad4240fc64f6bd" -> null
+  - public_ip   = "13.53.40.236" -> null
+  - ssh_command = "ssh -i ~/.ssh/id_ed25519 ubuntu@13.53.40.236" -> null
+  - web_url     = "http://13.53.40.236" -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: 
+aws_instance.vm: Destroying... [id=i-019ad4240fc64f6bd]
+aws_instance.vm: Still destroying... [id=i-019ad4240fc64f6bd, 00m10s elapsed]
+aws_instance.vm: Still destroying... [id=i-019ad4240fc64f6bd, 00m20s elapsed]
+aws_instance.vm: Still destroying... [id=i-019ad4240fc64f6bd, 00m30s elapsed]
+aws_instance.vm: Destruction complete after 30s
+aws_key_pair.this: Destroying... [id=tf-student-demo-key]
+aws_security_group.vm: Destroying... [id=sg-010b389b218d043ab]
+aws_key_pair.this: Destruction complete after 0s
+aws_security_group.vm: Destruction complete after 1s
+
+Destroy complete! Resources: 3 destroyed.

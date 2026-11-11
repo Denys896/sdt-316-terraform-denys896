@@ -1,0 +1,14 @@
+data.aws_vpc.default: Reading...
+data.aws_ami.ubuntu: Reading...
+aws_key_pair.this: Refreshing state... [id=tf-student-demo-key]
+data.aws_ami.ubuntu: Read complete after 1s [id=ami-084df9e6ad4622caf]
+data.aws_vpc.default: Read complete after 1s [id=vpc-0969289d5292f93ce]
+data.aws_subnets.default: Reading...
+aws_security_group.vm: Refreshing state... [id=sg-010b389b218d043ab]
+data.aws_subnets.default: Read complete after 0s [id=eu-north-1]
+aws_instance.vm: Refreshing state... [id=i-073fbb98465c35368]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
